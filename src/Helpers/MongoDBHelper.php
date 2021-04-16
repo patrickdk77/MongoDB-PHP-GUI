@@ -55,6 +55,18 @@ class MongoDBHelper {
         if ( isset($_SESSION['mpg']['mongodb_database']) ) {
             $clientUri .= '/' . trim($_SESSION['mpg']['mongodb_database']);
         }
+        $clientUri .= '?';
+
+        if ( isset($_SESSION['mpg']['mongodb_authsource']) ) {
+            $clientUri .= 'authSource=' . trim($_SESSION['mpg']['mongodb_authsource']) . '&';
+        }
+        if ( isset($_SESSION['mpg']['mongodb_ssl']) ) {
+            $clientUri .= 'ssl=' . trim($_SESSION['mpg']['mongodb_ssl']) . '&';
+        }
+
+        if ( isset($_SESSION['mpg']['mongodb_uri']) ) {
+            $clientUri = $_SESSION['mpg']['mongodb_uri'];
+        }
 
         return new Client($clientUri);
 

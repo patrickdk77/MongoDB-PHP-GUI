@@ -46,6 +46,32 @@ class LoginController extends Controller {
             $_SESSION['mpg']['mongodb_database'] = $_POST['database'];
         }
 
+        if ( isset($_POST['authsource']) && !empty($_POST['authsource']) ) {
+            $_SESSION['mpg']['mongodb_authsource'] = $_POST['authsource'];
+        }
+
+        if ( isset($_POST['ssl']) && !empty($_POST['ssl']) ) {
+            $_SESSION['mpg']['mongodb_ssl'] = $_POST['ssl'];
+        }
+
+        if ( isset($_POST['uri']) && !empty($_POST['uri']) ) {
+            $_SESSION['mpg']['mongodb_uri'] = $_POST['uri'];
+            $url=parse_url($_POST['uri']);
+
+            if(isset($url['user']))
+                $_SESSION['mpg']['mongodb_user']=$url['user'];
+            if(isset($url['pass']))
+                $_SESSION['mpg']['mongodb_password']=$url['pass'];
+            if(isset($url['host']))
+                $_SESSION['mpg']['mongodb_host']=$url['host'];
+            if(isset($url['port']))
+                $_SESSION['mpg']['mongodb_port']=$url['port'];
+            if(isset($url['path']))
+                $_SESSION['mpg']['mongodb_database']=ltrim($url['path'],'/');
+
+            return [];
+        }
+
         return $errors;
 
     }
