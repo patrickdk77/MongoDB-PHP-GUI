@@ -45,15 +45,15 @@ class MongoDBHelper {
         if ( isset($_SESSION['mpg']['mongodb_user'])
             && isset($_SESSION['mpg']['mongodb_password'])
         ) {
-            $clientUri .= $_SESSION['mpg']['mongodb_user'] . ':';
-            $clientUri .= $_SESSION['mpg']['mongodb_password'] . '@';
+            $clientUri .= trim($_SESSION['mpg']['mongodb_user']) . ':';
+            $clientUri .= rawurlencode($_SESSION['mpg']['mongodb_password']) . '@';
         }
 
-        $clientUri .= $_SESSION['mpg']['mongodb_host'];
-        $clientUri .= ':' . $_SESSION['mpg']['mongodb_port'];
+        $clientUri .= trim($_SESSION['mpg']['mongodb_host']);
+        $clientUri .= ':' . trim($_SESSION['mpg']['mongodb_port']);
 
         if ( isset($_SESSION['mpg']['mongodb_database']) ) {
-            $clientUri .= '/' . $_SESSION['mpg']['mongodb_database'];
+            $clientUri .= '/' . trim($_SESSION['mpg']['mongodb_database']);
         }
 
         return new Client($clientUri);
