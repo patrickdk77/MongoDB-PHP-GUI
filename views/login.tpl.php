@@ -47,7 +47,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-uri"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="uri" name="uri">
+                            <input type="text" class="form-control" <?php if($url=getenv('MONGO_URL')) { echo 'value="'.$url.'"'; } ?> placeholder="uri" name="uri">
                         </div>
 
                         <br>
@@ -69,21 +69,21 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-server"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Host" name="host" >
+                            <input type="text" class="form-control" <?php if($host=getenv('MONGO_HOST')) { echo 'value="'.$host.'"'; } ?> placeholder="Host" name="host" >
                         </div>
 
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-filter"></i></span>
                             </div>
-                            <input type="text" class="form-control" value="21017" name="port" >
+                            <input type="text" class="form-control" <?php if($port=getenv('MONGO_PORT')) { echo 'value="'.$port.'"'; } else { echo 'value="21017"'; } ?> name="port" >
                         </div>
 
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-database"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Database" name="database">
+                            <input type="text" class="form-control" <?php if($db=getenv('MONGO_SCHEMA')) { echo 'value="'.$db.'"'; } ?> placeholder="Database" name="database">
                         </div>
 
                         <div class="input-group form-group">
