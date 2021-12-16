@@ -1,69 +1,38 @@
 <?php
 
+namespace MPG; // MongoDB PHP GUI
+
 use Limber\Application;
 use Capsule\Factory\ServerRequestFactory;
 use Limber\Exceptions\NotFoundHttpException;
 
+const VERSION = '1.2.7';
+
+/**
+ * Absolute path, without trailing slash.
+ * Example: /opt/mongodb-php-gui
+ */
+const ABS_PATH = __DIR__;
+
 session_start();
 
-/**
- * Application name.
- * 
- * @var string
- */
-define('MPG_APP_NAME', 'MongoDB PHP GUI');
+if ( !file_exists($autoload_file = ABS_PATH . '/vendor/autoload.php') ) {
+    die('Run `composer install` to complete MongoDB PHP GUI installation.');
+}
 
-/**
- * Application version.
- * 
- * @var string
- */
-define('MPG_APP_VERSION', '1.1.1');
+$loader = require_once $autoload_file;
+$loader->add('MPG', ABS_PATH . '/source/php');
 
-/**
- * Development mode?
- * 
- * @var string
- */
-define('MPG_DEV_MODE', false);
-
-/**
- * Absolute path. XXX Without trailing slash.
- * 
- * @var string
- */
-define('MPG_ABS_PATH', __DIR__);
-
-$baseUrl = '//' . $_SERVER['HTTP_HOST'];
-$serverPath = str_replace('\\', '/', dirname($_SERVER['REQUEST_URI']));
-$serverPath = ( $serverPath === '/' ) ? '' : $serverPath;
-$baseUrl .= $serverPath;
-
-/**
- * Server path. XXX Without trailing slash.
- * 
- * @var string
- */
-define('MPG_SERVER_PATH', $serverPath);
-
-/**
- * Base URL. XXX Without trailing slash.
- * 
- * @var string
- */
-define('MPG_BASE_URL', $baseUrl);
-
-require __DIR__ . '/autoload.php';
-require __DIR__ . '/routes.php';
+$router = require ABS_PATH . '/routes.php';
 
 $application = new Application($router);
 $serverRequest = ServerRequestFactory::createFromGlobals();
 
-// XXX This hack makes index to work in sub-folder case.
 try {
-    $response = $application->dispatch($serverRequest);
-} catch (NotFoundHttpException $e) {
-    header('Location: ' . rtrim($_SERVER['REQUEST_URI'], '/') . '/index');
-}
 
-$application->send($response);
+    $response = $application->dispatch($serverRequest);
+    $application->send($response);
+    
+} catch (NotFoundHttpException $_error) {
+    die('Route not found. Try to append a slash to URL.');
+}

@@ -1,0 +1,32 @@
+
+name: Docker Release
+
+on:
+  release:
+    types: [published]
+
+env:
+  DOCKER_USER: samueltallet
+  DOCKER_REPO: mongodb-php-gui
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ env.DOCKER_USER }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        
+    - name: docker build
+      run: docker build . --file Dockerfile --tag ${{ env.DOCKER_USER }}/${{ env.DOCKER_REPO }}:latest
+      
+    - name: docker push
+      run: docker push ${{ env.DOCKER_USER }}/${{ env.DOCKER_REPO }}:latest

@@ -1,6 +1,9 @@
-.git
+docs/
+tests/
+.git/
+.gitignore
+.htaccess
+Dockerfile
 README.md
 LICENSE
-Dockerfile
-.gitignore
 Makefile
